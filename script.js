@@ -1,4 +1,22 @@
 const internalLinks = document.querySelectorAll('a[href^="#"]:not([href="#"])');
+const nav = document.querySelector(".nav");
+const navToggle = document.querySelector(".nav-toggle");
+
+if (nav && navToggle) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = nav.classList.toggle("is-open");
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+    navToggle.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+  });
+
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open navigation menu");
+    });
+  });
+}
 
 internalLinks.forEach((link) => {
   link.addEventListener("click", (event) => {

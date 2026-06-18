@@ -147,7 +147,7 @@ a {
 }
 
 .hero-content {
-  width: min(1020px, 100%);
+  width: min(850px, 100%);
   text-align: center;
 }
 
@@ -183,15 +183,44 @@ h2 {
 }
 
 h1 {
-  font-size: clamp(5rem, 9.5vw, 9.5rem);
+  font-size: clamp(4rem, 9vw, 8.5rem);
 }
 
-#hero-title {
+.hero-type {
+  --chars: 1;
+  --delay: 0ms;
+  --duration: 1000ms;
+  position: relative;
+  display: inline-block;
   color: #8f4f6b;
+  clip-path: inset(0 100% 0 0);
+  animation: revealType var(--duration) steps(var(--chars), end) var(--delay) forwards;
+  vertical-align: bottom;
+  white-space: nowrap;
 }
 
-#hero-title span {
-  display: block;
+.hero-type::after {
+  position: absolute;
+  top: 0.1em;
+  left: 0;
+  bottom: 0.08em;
+  width: 0.055em;
+  background: var(--accent-deep);
+  content: "";
+  opacity: 0;
+  animation: moveCaret var(--duration) steps(var(--chars), end) var(--delay) forwards;
+}
+
+.hero-intro {
+  --chars: 7;
+  --delay: 320ms;
+  --duration: 1200ms;
+}
+
+.hero-fullname {
+  --chars: 12;
+  --delay: 1620ms;
+  --duration: 1900ms;
 }
 
 h2 {
@@ -213,12 +242,31 @@ h3 {
 }
 
 .hero-lead {
-  width: min(880px, 100%);
-  margin: 26px auto 0;
+  width: min(760px, 100%);
+  min-height: calc(1.75em * 3);
+  margin: 28px auto 0;
   color: var(--muted);
-  font-size: clamp(1.08rem, 1.9vw, 1.36rem);
+  font-size: clamp(1rem, 2vw, 1.28rem);
   line-height: 1.75;
   opacity: 1;
+}
+
+.hero-lead-text::after {
+  display: none;
+  width: 0.08em;
+  height: 1em;
+  margin-left: 0.08em;
+  background: var(--accent-deep);
+  content: "";
+  transform: translateY(0.16em);
+}
+
+.hero-lead.is-typing .hero-lead-text::after {
+  display: inline-block;
+}
+
+.hero-lead.is-done .hero-lead-text::after {
+  display: none;
 }
 
 .floating-tags {
@@ -241,14 +289,16 @@ h3 {
   box-shadow: 0 18px 42px rgba(139, 87, 84, 0.16), 0 6px 16px rgba(0, 0, 0, 0.08);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 0.84rem;
-  opacity: 1;
+  opacity: 0;
   animation: tagReveal 520ms ease forwards, tagFloat 5200ms ease-in-out infinite;
   animation-delay: var(--tag-reveal-delay, 0ms), var(--tag-float-delay, 0ms);
+  animation-play-state: paused, running;
   transform: translate(0, 0) rotate(var(--tag-rotate));
 }
 
 .tag.is-visible {
   opacity: 1;
+  animation-play-state: running, running;
 }
 
 .tag-left {
@@ -276,6 +326,7 @@ h3 {
   --tag-reveal-delay: 160ms;
   animation: tagReveal 520ms ease forwards, tagFloatCenter 5200ms ease-in-out infinite;
   animation-delay: var(--tag-reveal-delay), var(--tag-float-delay, 0ms);
+  animation-play-state: paused, running;
   transform: translateX(-50%) rotate(var(--tag-rotate));
 }
 
@@ -586,6 +637,29 @@ h3 {
   50% {
     opacity: 0.3;
     transform: translateY(12px) scale(1.02);
+  }
+}
+
+@keyframes revealType {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes moveCaret {
+  0%,
+  98% {
+    left: 0;
+    opacity: 1;
+  }
+
+  98% {
+    left: 100%;
+  }
+
+  to {
+    left: 100%;
+    opacity: 0;
   }
 }
 
@@ -1994,6 +2068,7 @@ h3 {
   .about-portrait::before,
   .about-portrait,
   .hero-lead,
+  .hero-type,
   .tag,
   .tech-chip,
   .certificate-card,
@@ -2003,4 +2078,15 @@ h3 {
     transition: none;
   }
 
+  .hero-type::after {
+    display: none;
+  }
+
+  .hero-intro {
+    clip-path: inset(0 0 0 0);
+  }
+
+  .hero-fullname {
+    clip-path: inset(0 0 0 0);
+  }
 }
